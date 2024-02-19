@@ -1,20 +1,10 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-    location: {
-        country: {
-            type: String,
-            default: "Unknown"
-        },
-        city: {
-            type: String,
-            default: "Unknown"
-        }
-    },
-    deviceID: { 
+    ipAddress: {
         type: String,
     },
-    ipAddress: {
+    deviceID: { 
         type: String,
     },
     createdAt: {

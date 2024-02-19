@@ -7,31 +7,21 @@ import mongoose from 'mongoose';
 import QRCode from 'qrcode';
 import path from 'path';
 import cors from 'cors';
-import geoip from 'geoip-lite';
 import DeviceDetector from 'device-detector-js';
 import bodyParser from 'body-parser';
-import JobQuery from './models/JobQuery.js';
-import Loans from './models/Loans.js';
-import RealEstate from './models/RealEstate.js';
-import CreditCard from './models/CreditCard.js';
-import OtherInsurance from './models/OtherInsurances.js';
-import SavingsInvestments from './models/SavingsInvestments.js';
 import User from './models/User.js';
-import VechicleInsurance from './models/VehicleInsurance.js';
 import JobQueryRoute from './routes/JobQuery.js';
 import RealEstateRoute from './routes/RealEstate.js';
-
 import CreditCardRoute from './routes/CreditCard.js';
 import OtherInsuranceRoute from './routes/OtherInsurance.js';
-
 import SavingsInvestmentsRoute from './routes/SavingsInvestments.js';
 import LoanRoute from './routes/Loans.js';
 import VechicleInsuranceRoute from './routes/VehicleInsurance.js';
 import AdminRoute from './routes/Admin.js';
 import { fileURLToPath } from 'url';
-
+import requestIp from 'request-ip';
 import axios from 'axios';
-import { dirname, join } from 'path';
+import { dirname } from 'path';
 
 dotenv.config();
 const app = express();
@@ -44,6 +34,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 app.use(cors({ origin: '*' }));
+app.use(requestIp.mw());
 
 // MongoDB connection
 try {
@@ -63,7 +54,7 @@ app.use(compression());
 // Dashboard endpoint to fetch data
 app.get('/dashboard', async (req, res) => {
     try {
-
+        // Fetch data from different models
         const jobQueryData = await JobQuery.find();
         const loansData = await Loans.find();
         const creditCardData = await CreditCard.find();
@@ -72,6 +63,7 @@ app.get('/dashboard', async (req, res) => {
         const otherInsurancesData = await OtherInsurance.find();
         const vehicleInsurancesData = await VechicleInsurance.find();
 
+        // Calculate leads count and percentage
         const leadsCount = {
             jobs: jobQueryData.length,
             loans: loansData.length,
@@ -93,6 +85,7 @@ app.get('/dashboard', async (req, res) => {
             }
         }
 
+        // Prepare categorized data
         const categorizedData = {
             jobs: jobQueryData,
             loans: loansData,
@@ -119,38 +112,20 @@ app.get('/qr/signup', async (req, res) => {
         const filePath = path.join(__dirname, 'output', 'file.png');
         await QRCode.toFile(filePath, qrCodeURL, { errorCorrectionLevel: 'H' });
 
-        const { geoLocation, deviceInfo } = await extractLocationAndDevice(req);
+        const { deviceInfo } = await extractDeviceInfo(req);
 
         // Save user information to the database
-        await saveUserInfoToDatabase(geoLocation, deviceInfo)
+        await saveUserInfoToDatabase(req, deviceInfo);
 
-
-        res.sendFile(filePath)
+        res.sendFile(filePath);
     } catch (error) {
         console.error('Error generating QR code:', error);
         res.status(500).send('Internal Server Error');
     }
 });
 
-
-
-
-async function extractLocationAndDevice(req) {
+async function extractDeviceInfo(req) {
     try {
-        // Get the client IP address from the request object
-        const ipAddress = req.ip;
-
-        console.log('User IP address:', ipAddress);
-
-        // Use the extracted IP address for geolocation lookup
-        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=db144de70203459286adc4c5f2f58989&q=${ipAddress}`);
-        const geoLocation = response.data;
-
-        // Check if location information is available
-        if (!geoLocation || !geoLocation.location) {
-            throw new Error('Location information not available');
-        }
-
         // Extract device information
         const userAgent = req.headers['user-agent'];
         const deviceDetector = new DeviceDetector();
@@ -164,28 +139,21 @@ async function extractLocationAndDevice(req) {
         };
 
         console.log('Device ID:', deviceInfo.deviceID);
-        console.log('Location:', geoLocation);
 
-        return { geoLocation, deviceInfo };
+        return { deviceInfo };
     } catch (error) {
-        console.error('Error extracting location and device:', error);
+        console.error('Error extracting device information:', error);
         throw error;
     }
 }
 
-
-
-
-
-
-async function saveUserInfoToDatabase(geoLocation, deviceInfo) {
+async function saveUserInfoToDatabase(req, deviceInfo) {
     try {
+        const ipAddress = req.clientIp;
+
         const user = new User({
-            location: {
-                country: geoLocation.country,
-                city: geoLocation.city,
-            },
-            ...deviceInfo,
+            ipAddress,
+            deviceID: deviceInfo.deviceID,
         });
         await user.save();
         console.log('User information saved successfully');
