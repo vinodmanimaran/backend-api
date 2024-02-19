@@ -111,9 +111,8 @@ app.get('/dashboard', async (req, res) => {
 
 app.get("/qr", async (req, res) => {
     try {
-
         const redirectURL = "https://leads-website.vercel.app/";
-        const qrCodeURL = `https://backend-leads-8rdm.onrender.com/qr/redirect?redirect=${encodeURIComponent(redirectURL)}`;
+        const qrCodeURL = `https://backend-leads-8rdm.onrender.com/qr/redirect`;
         const filePath = path.join(__dirname, 'output', 'file.png');
         await QRCode.toFile(filePath, qrCodeURL, { errorCorrectionLevel: 'H' });
         res.sendFile(filePath);
@@ -133,8 +132,6 @@ app.get('/qr/redirect', async (req, res) => {
         console.error('Error redirecting:', error);
         res.status(500).send('Internal Server Error');
     }
-
-
 })
 async function extractDeviceInfo(req) {
     try {
