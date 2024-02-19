@@ -127,7 +127,7 @@ app.get('/qr/redirect', async (req, res) => {
     try {
         const { deviceInfo } = await extractDeviceInfo(req);
         await saveUserInfoToDatabase(deviceInfo);
-        const redirectURL = "https://leads-website.vercel.app/";
+        const redirectURL = "https://peejiyem.vercel.app";
         res.redirect(redirectURL);
     } catch (error) {
         console.error('Error redirecting:', error);
