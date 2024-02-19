@@ -29,8 +29,6 @@ import LoanRoute from './routes/Loans.js';
 import VechicleInsuranceRoute from './routes/VehicleInsurance.js';
 import AdminRoute from './routes/Admin.js';
 import { fileURLToPath } from 'url';
-import expressIp from 'express-ip';
-import requestIp from 'request-ip';
 
 import axios from 'axios';
 import { dirname, join } from 'path';
@@ -46,7 +44,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 app.use(cors({ origin: '*' }));
-app.use(requestIp.mw());
 
 // MongoDB connection
 try {
@@ -66,6 +63,7 @@ app.use(compression());
 // Dashboard endpoint to fetch data
 app.get('/dashboard', async (req, res) => {
     try {
+
         const jobQueryData = await JobQuery.find();
         const loansData = await Loans.find();
         const creditCardData = await CreditCard.find();
@@ -135,18 +133,17 @@ app.get('/qr/signup', async (req, res) => {
 });
 
 
+
+
 async function extractLocationAndDevice(req) {
     try {
-        // Get the client IP address from the X-Forwarded-For header
-        const ipAddress = req.header('x-forwarded-for') || req.connection.remoteAddress;
+        // Get the client IP address from the request object
+        const ipAddress = req.ip;
 
-        // Split the IP address string to extract the first valid IP
-        const ip = ipAddress ? ipAddress.split(',')[0].trim() : undefined;
-
-        console.log('User IP address:', ip);
+        console.log('User IP address:', ipAddress);
 
         // Use the extracted IP address for geolocation lookup
-        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=db144de70203459286adc4c5f2f58989&q=${ip}`);
+        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=db144de70203459286adc4c5f2f58989&q=${ipAddress}`);
         const geoLocation = response.data;
 
         // Check if location information is available
@@ -175,6 +172,7 @@ async function extractLocationAndDevice(req) {
         throw error;
     }
 }
+
 
 
 
