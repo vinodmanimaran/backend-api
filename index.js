@@ -113,7 +113,7 @@ app.get("/qr", async (req, res) => {
     try {
 
         const redirectURL = "https://leads-website.vercel.app/";
-        const qrCodeURL = `http://localhost:4040/qr/redirect?redirect=${encodeURIComponent(redirectURL)}`;
+        const qrCodeURL = `https://backend-leads-8rdm.onrender.com/qr/redirect?redirect=${encodeURIComponent(redirectURL)}`;
         const filePath = path.join(__dirname, 'output', 'file.png');
         await QRCode.toFile(filePath, qrCodeURL, { errorCorrectionLevel: 'H' });
         res.sendFile(filePath);
