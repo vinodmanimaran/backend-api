@@ -42,27 +42,6 @@ app.use(express.json());
 app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
 
-
-
-app.get('/', async (req, res) => {
-    try {
-        // Retrieve the IP address of the user making the request
-        const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        
-        // Call an IP geolocation API to obtain geographic coordinates
-        const response = await axios.get(`https://ipinfo.io/${ipAddress}?token=84938018ec2e71`);
-        
-        // Extract latitude and longitude from the API response
-        const { latitude, longitude } = response.data;
-
-        // Send the latitude and longitude as the response
-        res.json({ latitude, longitude });
-    } catch (error) {
-        console.error('Error obtaining geolocation:', error);
-        res.status(500).json({ error: 'Failed to obtain geolocation' });
-    }
-});
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
