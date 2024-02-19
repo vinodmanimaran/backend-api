@@ -10,6 +10,10 @@ import cors from 'cors';
 import DeviceDetector from 'device-detector-js';
 import bodyParser from 'body-parser';
 import User from './models/User.js';
+import { fileURLToPath } from 'url';
+import requestIp from 'request-ip';
+
+// Import routes
 import JobQueryRoute from './routes/JobQuery.js';
 import RealEstateRoute from './routes/RealEstate.js';
 import CreditCardRoute from './routes/CreditCard.js';
@@ -18,10 +22,6 @@ import SavingsInvestmentsRoute from './routes/SavingsInvestments.js';
 import LoanRoute from './routes/Loans.js';
 import VechicleInsuranceRoute from './routes/VehicleInsurance.js';
 import AdminRoute from './routes/Admin.js';
-import { fileURLToPath } from 'url';
-import requestIp from 'request-ip';
-import axios from 'axios';
-import { dirname } from 'path';
 
 dotenv.config();
 const app = express();
@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 app.use(cors({ origin: '*' }));
 app.use(requestIp.mw());
@@ -103,20 +103,19 @@ app.get('/dashboard', async (req, res) => {
     }
 });
 
-// Endpoint to generate and serve QR code for signup
-app.get('/qr/signup', async (req, res) => {
+
+
+
+
+
+
+app.get("/qr", async (req, res) => {
     try {
-        const token = Math.random().toString(36).substr(2, 8);
-        console.log('Signup Token:', token);
-        const qrCodeURL = `https://yourdomain.com/qr/signup/${token}`;
+
+        const redirectURL = "https://leads-website.vercel.app/";
+        const qrCodeURL = `http://localhost:4040/qr/redirect?redirect=${encodeURIComponent(redirectURL)}`;
         const filePath = path.join(__dirname, 'output', 'file.png');
         await QRCode.toFile(filePath, qrCodeURL, { errorCorrectionLevel: 'H' });
-
-        const { deviceInfo } = await extractDeviceInfo(req);
-
-        // Save user information to the database
-        await saveUserInfoToDatabase(req, deviceInfo);
-
         res.sendFile(filePath);
     } catch (error) {
         console.error('Error generating QR code:', error);
@@ -124,6 +123,19 @@ app.get('/qr/signup', async (req, res) => {
     }
 });
 
+app.get('/qr/redirect', async (req, res) => {
+    try {
+        const { deviceInfo } = await extractDeviceInfo(req);
+        await saveUserInfoToDatabase(deviceInfo);
+        const redirectURL = "https://leads-website.vercel.app/";
+        res.redirect(redirectURL);
+    } catch (error) {
+        console.error('Error redirecting:', error);
+        res.status(500).send('Internal Server Error');
+    }
+
+
+})
 async function extractDeviceInfo(req) {
     try {
         // Extract device information
@@ -175,6 +187,10 @@ app.use("/services", LoanRoute);
 app.use("/services", SavingsInvestmentsRoute);
 app.use("/services", OtherInsuranceRoute);
 app.use("/services", VechicleInsuranceRoute);
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the home page');
+});
 
 app.listen(port, () => {
     console.log(`The Server is on ${port}`);
