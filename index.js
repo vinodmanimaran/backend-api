@@ -139,19 +139,15 @@ async function extractLocationAndDevice(req) {
     try {
         const ipAddress = req.header('x-forwarded-for') || req.connection.remoteAddress;
 
-        // Handling IPv6 address format (::1)
         let ip = ipAddress;
         if (ipAddress.includes('::ffff:')) {
-            // Convert IPv4-mapped IPv6 address to IPv4 format
             ip = ipAddress.split(':').pop();
         }
         
-        // Now you can use the 'ip' variable to handle both IPv4 and IPv6 addresses
-        // Example usage:
+        
         console.log('User IP address:', ip);
         
-        // Make a request to the IP geolocation API
-        const response = await axios.get(`https://ipgeolocation.abstractapi.com/v1/?api_key=a3c3277c2a5441f69d516ee0e4276fec&ip_address=${ip}`);
+        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=db144de70203459286adc4c5f2f58989&q=${ip}`);
         const geoLocation = response.data;
    
         if (!geoLocation || !geoLocation.location) {
