@@ -149,11 +149,12 @@ async function extractLocationAndDevice(req) {
         // Now you can use the 'ip' variable to handle both IPv4 and IPv6 addresses
         // Example usage:
         console.log('User IP address:', ip);
-                // Make a request to the IP geolocation API
+        
+        // Make a request to the IP geolocation API
         const response = await axios.get(`https://ipgeolocation.abstractapi.com/v1/?api_key=a3c3277c2a5441f69d516ee0e4276fec&ip_address=${ip}`);
         const geoLocation = response.data;
    
-        if (!geoLocation) {
+        if (!geoLocation || !geoLocation.location) {
             throw new Error('Location information not available');
         }
 
@@ -173,20 +174,11 @@ async function extractLocationAndDevice(req) {
 
         return { geoLocation, deviceInfo };
     } catch (error) {
-        if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log('Error response data:', error.response.data);
-            console.log('Error response status:', error.response.status);
-            console.log('Error response headers:', error.response.headers);
-        } else if (error.request) {
-            // The request was made but no response was received
-            console.log('Error request:', error.request);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error message:', error.message);
-        }    }
+        console.error('Error extracting location and device:', error);
+        throw error; // Rethrow the error to be handled by the caller
+    }
 }
+
 
 
 
