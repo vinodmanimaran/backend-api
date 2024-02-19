@@ -137,23 +137,24 @@ app.get('/qr/signup', async (req, res) => {
 
 async function extractLocationAndDevice(req) {
     try {
+        // Get the client IP address from the X-Forwarded-For header
         const ipAddress = req.header('x-forwarded-for') || req.connection.remoteAddress;
 
-        let ip = ipAddress;
-        if (ipAddress.includes('::ffff:')) {
-            ip = ipAddress.split(':').pop();
-        }
-        
-        
+        // Split the IP address string to extract the first valid IP
+        const ip = ipAddress ? ipAddress.split(',')[0].trim() : undefined;
+
         console.log('User IP address:', ip);
-        
+
+        // Use the extracted IP address for geolocation lookup
         const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=db144de70203459286adc4c5f2f58989&q=${ip}`);
         const geoLocation = response.data;
-   
+
+        // Check if location information is available
         if (!geoLocation || !geoLocation.location) {
             throw new Error('Location information not available');
         }
 
+        // Extract device information
         const userAgent = req.headers['user-agent'];
         const deviceDetector = new DeviceDetector();
         const device = deviceDetector.parse(userAgent);
@@ -171,9 +172,10 @@ async function extractLocationAndDevice(req) {
         return { geoLocation, deviceInfo };
     } catch (error) {
         console.error('Error extracting location and device:', error);
-        throw error; // Rethrow the error to be handled by the caller
+        throw error;
     }
 }
+
 
 
 
