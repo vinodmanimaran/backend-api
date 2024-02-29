@@ -19,7 +19,6 @@ AdminSchema.pre('save', async function (next) {
         if (!admin.isModified('password')) {
             return next();
         }
-        // Check if the password is not empty
         if (!admin.password) {
             return next(new Error('Password is required'));
         }

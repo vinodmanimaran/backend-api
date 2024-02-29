@@ -3,28 +3,26 @@ import mongoose from "mongoose";
 const LoanSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   mobile: {
     type: String,
-    required: true,
   },
   alternate_number: {
     type: String,
-    required: true,
   },
   amount:{
-  type:Number,
-  required:true
-},
+    type: Number,
+  },
   place: {
     type: String,
-    required: true,
   },
   district: {
     type: String,
-    required: true,
   },
+  loan_type: {
+    type: String,
+    enum: ['Home Loan', 'Personal Loan', 'Business Loan', 'Loan against Property', 'Vehicle Loan', 'Vehicle Refinance', 'Gold Loan','Others']
+  }
 }, { timestamps: true });
 
 const Loan = mongoose.model("Loans", LoanSchema);

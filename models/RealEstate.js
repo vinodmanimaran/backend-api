@@ -4,31 +4,25 @@ const RealEstateSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
     },
-    mobileNumber: {
+    mobile: {
       type: String,
-      required: true,
     },
-    alternateNumber: {
+    alternate_number: {
       type: String,
-      required: true,
     },
     purchaseOrSale: {
       type: String,
-      required: true,
+      enum:['Purchase',"Sale",'Others']
     },
     agreeOrCommercial: {
       type: String,
-      required: true,
     },
     place: {
       type: String,
-      required: true,
     },
     district: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }

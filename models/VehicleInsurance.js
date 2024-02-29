@@ -3,27 +3,22 @@ import mongoose from "mongoose";
 const VehicleInsuranceSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   mobile: {
     type: String,
-    required: true,
   },
   alternate_number: {
     type: String,
-    required: true,
   },
   vehicle: {
     type: String,
-    required: true,
+    enum:["Bike", "Car", "Van", "School Bus", "Commercial vehicles", "Others"]
   },
   place: {
     type: String,
-    required: true,
   },
   district: {
     type: String,
-    required: true,
   },
 }, { timestamps: true });
 

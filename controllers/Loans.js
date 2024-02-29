@@ -9,6 +9,7 @@ export const LoanController = expressAsyncHandler(async (req, res) => {
       alternate_number,
       amount,
       place,
+      loan_type,
       district,
     } = req.body;
 
@@ -19,6 +20,7 @@ export const LoanController = expressAsyncHandler(async (req, res) => {
       amount,
       place,
       district,
+      loan_type
     });
 
     const savedLoan = await newLoan.save();

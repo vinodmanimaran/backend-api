@@ -4,35 +4,27 @@ const JobQuerySchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
     }, 
     mobile_number: {
-      type: String,
-      required: true,
+      type: Number,
     },
     alternate_number: {
-      type: String,
-      required: true,
+      type: Number,
     },
     Qualification: {
       type: String,
-      required: true,
     },
     Experience: {
       type: String,
-      required: true,
     },
     Country: {
       type: String,
-      required: true,
     },
     Place: {
       type: String,
-      required: true,
     },
     District: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }

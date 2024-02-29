@@ -5,8 +5,8 @@ export const RealEstateController = expressAsyncHandler(async (req, res) => {
   try {
     const {
       name,
-      mobileNumber,
-      alternateNumber,
+      mobile,
+      alternate_number,
       purchaseOrSale,
       agreeOrCommercial,
       place,
@@ -15,8 +15,8 @@ export const RealEstateController = expressAsyncHandler(async (req, res) => {
 
     const newRealEstate = new RealEstate({
       name,
-      mobileNumber,
-      alternateNumber,
+      mobile,
+      alternate_number,
       purchaseOrSale,
       agreeOrCommercial,
       place,
