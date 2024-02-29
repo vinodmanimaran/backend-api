@@ -19,6 +19,11 @@ const InsuranceSchema = new mongoose.Schema({
   insurance_type: {
     type: String,
     enum: ['Health Insurance', 'Life Insurance', 'Global Insurance','Others']
+  },
+
+  agentId: {
+    type: String, 
+    ref: 'Agent'
   }
 }, { timestamps: true });
 

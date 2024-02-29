@@ -1,6 +1,7 @@
 import JobQuery from "../models/JobQuery.js";
 import expressAsyncHandler from 'express-async-handler';
 import { handleFormSubmission } from "../utils/EmailHandler.js";
+import Agent from '../models/Agent.js';
 
 export const JobQueryController = expressAsyncHandler(async (req, res) => {
   try {
@@ -14,6 +15,14 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
       Place,
       District,
     } = req.body;
+    const referralID = req.params.referralID; // Extract referralID from request parameters
+    console.log(referralID)
+
+    // Find the agent using the referral ID extracted from the URL
+    const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
+    if (!agent) {
+        return res.status(404).json({ message: "Agent not found for the provided referral ID" });
+    }
 
     const newJobQuery = new JobQuery({
       name,
@@ -24,6 +33,7 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
       Country,
       Place,
       District,
+      agentId:agent.agentId
     });
 
     const savedJobQuery = await newJobQuery.save();
@@ -66,9 +76,15 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
 
 export const GetJobQueryController = expressAsyncHandler(async (req, res) => {
   try {
-    const JobQuerys = await JobQuery.find();
 
-    res.status(200).json({ JobQuerys });
+    const referralID = req.params.referralID; 
+    console.log(referralID)
+   // Find the agent associated with the referral ID
+   const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
+  
+    const JobQuerys = await JobQuery.find({agentId:agent.agentId});
+
+    res.status(200).json({ agent, JobQuerys });
   } catch (error) {
     console.error('Error getting JobQuery Details:', error);
     res.status(500).json({ message: "Internal Server Error" });

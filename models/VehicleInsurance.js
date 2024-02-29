@@ -20,6 +20,11 @@ const VehicleInsuranceSchema = new mongoose.Schema({
   district: {
     type: String,
   },
+
+  agentId: {
+    type: String, 
+    ref: 'Agent'
+  }
 }, { timestamps: true });
 
 const VehicleInsurance = mongoose.model("VehicleInsurance", VehicleInsuranceSchema);

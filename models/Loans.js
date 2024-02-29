@@ -22,6 +22,10 @@ const LoanSchema = new mongoose.Schema({
   loan_type: {
     type: String,
     enum: ['Home Loan', 'Personal Loan', 'Business Loan', 'Loan against Property', 'Vehicle Loan', 'Vehicle Refinance', 'Gold Loan','Others']
+  },
+  agentId: {
+    type: String, 
+    ref: 'Agent'
   }
 }, { timestamps: true });
 

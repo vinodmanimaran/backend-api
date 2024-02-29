@@ -17,7 +17,7 @@ const CreditCardSchema = new mongoose.Schema({
     type: String,
   },
   agentId: {
-    type: mongoose.Schema.Types.ObjectId, 
+    type: String, 
     ref: 'Agent'
   }
 }, { timestamps: true });

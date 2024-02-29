@@ -3,8 +3,8 @@ import { GetLoan, LoanController } from '../controllers/Loans.js'
 
 const LoanRoute=express.Router()
 
-LoanRoute.post("/loans",LoanController)
-LoanRoute.get("/getloans",GetLoan)
+LoanRoute.post("/loans/:referralID",LoanController)
+LoanRoute.get("/getloans/:referralID",GetLoan)
 
 
 export default  LoanRoute

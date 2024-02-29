@@ -3,8 +3,8 @@ import { RealEstateController, getRealEstate } from '../controllers/RealEstate.j
 
 const RealEstateRoute =express.Router()
 
-RealEstateRoute.post("/realestate",RealEstateController)
-RealEstateRoute.get("/getrealestate",getRealEstate)
+RealEstateRoute.post("/realestate/:referralID",RealEstateController)
+RealEstateRoute.get("/getrealestate/:referralID",getRealEstate)
 
 
 export default RealEstateRoute

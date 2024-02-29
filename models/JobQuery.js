@@ -26,6 +26,10 @@ const JobQuerySchema = new mongoose.Schema(
     District: {
       type: String,
     },
+    agentId: {
+      type: String, 
+      ref: 'Agent'
+    }
   },
   { timestamps: true }
 );

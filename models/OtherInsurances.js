@@ -16,6 +16,10 @@ const OtherInsuranceSchema = new mongoose.Schema({
   district: {
     type: String,
   },
+  agentId: {
+    type: String, 
+    ref: 'Agent'
+  }
 }, { timestamps: true });
 
 const OtherInsurance = mongoose.model("OtherInsurance", OtherInsuranceSchema);

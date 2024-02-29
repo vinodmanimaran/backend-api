@@ -3,8 +3,8 @@ import { OtherInsuranceController, getOtherInsurance } from '../controllers/Othe
 
 const OtherInsuranceRoute=express.Router()
 
-OtherInsuranceRoute.post("/otherinsurance",OtherInsuranceController)
-OtherInsuranceRoute.get("/getotherinsurance",getOtherInsurance)
+OtherInsuranceRoute.post("/otherinsurance/:referralID",OtherInsuranceController)
+OtherInsuranceRoute.get("/getotherinsurance/:referralID",getOtherInsurance)
 
 
 export default  OtherInsuranceRoute

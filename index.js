@@ -189,7 +189,7 @@ app.use("/services", InsuranceRoute);
 app.use("/services", SavingsInvestmentsRoute);
 app.use("/services", VechicleInsuranceRoute);
 app.use("/agent",AgentRouter)
-app.get('/', (req, res) => {
+app.get('/', (req, res) => {  
     res.send('Welcome to the home page');
 });
 

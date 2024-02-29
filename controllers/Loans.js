@@ -1,5 +1,6 @@
 import Loan from "../models/Loans.js";
 import expressAsyncHandler from 'express-async-handler';
+import Agent from '../models/Agent.js';
 
 export const LoanController = expressAsyncHandler(async (req, res) => {
   try {
@@ -13,6 +14,16 @@ export const LoanController = expressAsyncHandler(async (req, res) => {
       district,
     } = req.body;
 
+    const referralID = req.params.referralID; // Extract referralID from request parameters
+    console.log(referralID)
+
+    // Find the agent using the referral ID extracted from the URL
+    const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
+    if (!agent) {
+        return res.status(404).json({ message: "Agent not found for the provided referral ID" });
+    }
+
+
     const newLoan = new Loan({
       name,
       mobile,
@@ -20,7 +31,8 @@ export const LoanController = expressAsyncHandler(async (req, res) => {
       amount,
       place,
       district,
-      loan_type
+      loan_type,
+      agentId:agent.agentId
     });
 
     const savedLoan = await newLoan.save();
@@ -33,8 +45,14 @@ export const LoanController = expressAsyncHandler(async (req, res) => {
 });
 export const GetLoan=expressAsyncHandler(async(req,res)=>{
   try {
-    const Loans=await Loan.find()
-    res.status(200).json({Loans})
+    const referralID = req.params.referralID; 
+    console.log(referralID)
+   // Find the agent associated with the referral ID
+   const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
+  
+
+    const Loans=await Loan.find({agentId:agent.agentId})
+    res.status(200).json({agent,Loans})
   } catch (error) {
     console.error(error.response.name)
     res.status(500).json({message:"Internal Server error"})

@@ -3,8 +3,8 @@ import { VehicleInsuranceController, getVehicleInsurance } from '../controllers/
 
 const VechicleInsuranceRoute=express.Router()
 
-VechicleInsuranceRoute.post("/vechicleinsurance",VehicleInsuranceController)
-VechicleInsuranceRoute.get("/getvechicleinsurance",getVehicleInsurance)
+VechicleInsuranceRoute.post("/vechicleinsurance/:referralID",VehicleInsuranceController)
+VechicleInsuranceRoute.get("/getvechicleinsurance/:referralID",getVehicleInsurance)
 
 
 export default  VechicleInsuranceRoute

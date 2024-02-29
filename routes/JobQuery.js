@@ -3,8 +3,8 @@ import { GetJobQueryController, JobQueryController } from '../controllers/JobQue
 
 const JobQueryRoute=express.Router()
 
-JobQueryRoute.post("/jobquery",JobQueryController)
-JobQueryRoute.get("/getjobquery",GetJobQueryController)
+JobQueryRoute.post("/jobquery/:referralID",JobQueryController)
+JobQueryRoute.get("/getjobquery/:referralID",GetJobQueryController)
 
 
 export default  JobQueryRoute

@@ -3,8 +3,8 @@ import { SavingsInvestmentsController, getSavingsInvestment } from '../controlle
 
 const SavingsInvestmentsRoute=express.Router()
 
-SavingsInvestmentsRoute.post("/savinginvestment",SavingsInvestmentsController)
-SavingsInvestmentsRoute.get("/getsavinginvestment",getSavingsInvestment)
+SavingsInvestmentsRoute.post("/savinginvestment/:referralID",SavingsInvestmentsController)
+SavingsInvestmentsRoute.get("/getsavinginvestment/:referralID",getSavingsInvestment)
 
 
 export default  SavingsInvestmentsRoute

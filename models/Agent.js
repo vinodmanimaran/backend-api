@@ -15,7 +15,6 @@ const agentSchema = new mongoose.Schema({
     agentId:{
         type: String,
         unique: true,
-
     },
     name: {
         type: String,
@@ -33,9 +32,13 @@ const agentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    uniqueURL: {
+    referralID: {
         type: String,
         unique: true
+    },
+    uniqueURL:{
+        type:String,
+        unique:true
     },
     qrCode: {
         type: String,
@@ -166,6 +169,7 @@ agentSchema.pre('save', async function(next) {
         const frontendURL = 'https://pygeem-client.vercel.app'; 
         const referralID = uuidv4();
         agent.uniqueURL = `${frontendURL}/referral/${referralID}`;
+        agent.referralID=referralID
     }
     if (!agent.qrCode) {
         const qrData = await qrcode.toDataURL(agent.uniqueURL);

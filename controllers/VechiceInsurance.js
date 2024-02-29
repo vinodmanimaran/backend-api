@@ -1,5 +1,6 @@
 import VehicleInsurance from "../models/VehicleInsurance.js";
 import expressAsyncHandler from 'express-async-handler';
+import Agent from '../models/Agent.js';
 
 export const VehicleInsuranceController = expressAsyncHandler(async (req, res) => {
   try {
@@ -12,6 +13,15 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
       district,
     } = req.body;
 
+    const referralID = req.params.referralID; 
+    console.log(referralID)
+
+    const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
+    if (!agent) {
+        return res.status(404).json({ message: "Agent not found for the provided referral ID" });
+    }
+
+
     const newVehicleInsurance = new VehicleInsurance({
       name,
       mobile,
@@ -19,6 +29,7 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
       vehicle,
       place,
       district,
+      agentId:agent.agentId
     });
 
     const savedVehicleInsurance = await newVehicleInsurance.save();
@@ -33,8 +44,11 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
 
 export const getVehicleInsurance=expressAsyncHandler(async(req,res)=>{
   try{
-    const VehicleInsurances=await VehicleInsurance.find()
-    res.status(200).json({VehicleInsurances})
+    const referralID = req.params.referralID; 
+    console.log(referralID)
+   const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
+    const VehicleInsurances=await VehicleInsurance.find({agentId:agent.agentId})
+    res.status(200).json({agent,VehicleInsurances})
   }catch(error){
     console.error(error.response.name)
     res.status(500).json({message:"Internal Server Error"})
