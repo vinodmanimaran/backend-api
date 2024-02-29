@@ -11,7 +11,7 @@ export const CreditCardController = expressAsyncHandler(async (req, res) => {
       alternate_number,
       place,
       district,
-    } = req.body;
+      agentId    } = req.body;
 
     const newCreditCard = new CreditCard({
       name:name,
@@ -19,12 +19,16 @@ export const CreditCardController = expressAsyncHandler(async (req, res) => {
       alternate_number:alternate_number,
       place:place,
       district:district,
+      agentId:agentId
     });
 
     const savedCreditCard = await newCreditCard.save();
+
+    await savedCreditCard.populate('agentId').execPopulate();
+
     console.log("Received Credit Card Data:", savedCreditCard);
 
-    res.status(201).json(savedCreditCard);
+    res.status(201).json({ savedCreditCard, agentId: savedCreditCard.agentId });
   } catch (error) {
     console.error('Error creating credit card submission:', error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -35,7 +39,7 @@ export const CreditCardController = expressAsyncHandler(async (req, res) => {
 export const GetCreditCardController = expressAsyncHandler(async (req, res) => {
   try {
 
-    const creditCards = await CreditCard.find();
+    const creditCards = await CreditCard.find().populate('agentId');
 
     res.status(200).json({ creditCards });
   } catch (error) {

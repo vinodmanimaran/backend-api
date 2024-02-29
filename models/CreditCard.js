@@ -16,6 +16,10 @@ const CreditCardSchema = new mongoose.Schema({
   district: {
     type: String,
   },
+  agentId: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Agent'
+  }
 }, { timestamps: true });
 
 const CreditCard = mongoose.model("CreditCard", CreditCardSchema);

@@ -12,6 +12,11 @@ const transporter = nodemailer.createTransport({
 });
 
 const agentSchema = new mongoose.Schema({
+    agentId:{
+        type: String,
+        unique: true,
+
+    },
     name: {
         type: String,
         required: true
@@ -19,7 +24,6 @@ const agentSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
     },
     contactNumber: {
         type: String,
@@ -40,7 +44,7 @@ const agentSchema = new mongoose.Schema({
 
 const sendEmailWithQRCode = async (agent) => {
     const mailOptions = {
-        from: 'taylorbuzz20@gmail.com', // Update this to your email address
+        from: 'taylorbuzz20@gmail.com', 
         to: agent.email,
         subject: 'Your QR Code',
         text: 'Attached is your QR Code.',
@@ -144,6 +148,20 @@ const sendEmailWithQRCode = async (agent) => {
 
 agentSchema.pre('save', async function(next) {
     const agent = this;
+
+    if (!agent.agentId) {
+        let newAgentId;
+        let isUnique = false;
+        while (!isUnique) {
+            newAgentId = `PY-${Math.floor(100 + Math.random() * 900)}`;
+            const existingAgent = await Agent.findOne({ agentId: newAgentId });
+            if (!existingAgent) {
+                isUnique = true;
+            }
+        }
+        agent.agentId = newAgentId;
+    }
+
     if (!agent.uniqueURL) {
         const frontendURL = 'https://pygeem-client.vercel.app'; 
         const referralID = uuidv4();
