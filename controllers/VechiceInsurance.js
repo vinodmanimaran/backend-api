@@ -1,6 +1,6 @@
-import VehicleInsurance from "../models/VehicleInsurance.js";
 import expressAsyncHandler from 'express-async-handler';
 import Agent from '../models/Agent.js';
+import VehicleInsurance from '../models/VehicleInsurance.js';
 
 export const VehicleInsuranceController = expressAsyncHandler(async (req, res) => {
   try {

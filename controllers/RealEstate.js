@@ -12,6 +12,7 @@ export const RealEstateController = expressAsyncHandler(async (req, res) => {
       agreeOrCommercial,
       place,
       district,
+      Estimated_value
     } = req.body;
 
 
@@ -33,6 +34,7 @@ export const RealEstateController = expressAsyncHandler(async (req, res) => {
       agreeOrCommercial,
       place,
       district,
+      Estimated_value,
       agentId:agent.agentId
     });
 

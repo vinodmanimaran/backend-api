@@ -5,11 +5,11 @@ const JobQuerySchema = new mongoose.Schema(
     name: {
       type: String,
     }, 
-    mobile_number: {
-      type: Number,
+    mobile: {
+      type: String, // Change type to String
     },
     alternate_number: {
-      type: Number,
+      type: String, // Change type to String if necessary
     },
     Qualification: {
       type: String,

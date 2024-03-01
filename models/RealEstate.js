@@ -28,7 +28,7 @@ const RealEstateSchema = new mongoose.Schema(
       type: String, 
       ref: 'Agent'
     },
-    amount:{
+    Estimated_value:{
       type:Number
     }
   },

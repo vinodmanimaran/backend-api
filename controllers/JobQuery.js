@@ -7,7 +7,7 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
   try {
     const {
       name,
-      mobile_number,
+      mobile,
       alternate_number,
       Qualification,
       Experience,
@@ -25,8 +25,8 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
     }
 
     const newJobQuery = new JobQuery({
-      name,
-      mobile_number,
+      name:name,
+      mobile,
       alternate_number,
       Qualification,
       Experience,
@@ -36,6 +36,8 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
       agentId:agent.agentId
     });
 
+
+    console.log("newJob",newJobQuery)
     const savedJobQuery = await newJobQuery.save();
 
     const subject = `New Job Query - ${name}`;
@@ -49,7 +51,7 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
     <p style="margin-bottom: 20px;">A new job query has been submitted. Here are the details:</p>
     <div style="margin-top: 20px;">
       <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Name:</strong> ${name}</p>
-      <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Mobile Number:</strong> ${mobile_number}</p>
+      <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Mobile Number:</strong> ${mobile}</p>
       <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Alternate Number:</strong> ${alternate_number}</p>
       <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Qualification:</strong> ${Qualification}</p>
       <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Experience:</strong> ${Experience}</p>

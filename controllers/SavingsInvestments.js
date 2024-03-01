@@ -9,6 +9,7 @@ export const SavingsInvestmentsController = expressAsyncHandler(async (req, res)
       mobile,
       alternate_number,
       place,
+      Estimated_saving_amount,
       district,
     } = req.body;
 
@@ -27,6 +28,7 @@ export const SavingsInvestmentsController = expressAsyncHandler(async (req, res)
       alternate_number,
       place,
       district,
+      Estimated_saving_amount,
       agentId:agent.agentId
     });
 
