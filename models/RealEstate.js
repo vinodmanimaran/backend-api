@@ -27,6 +27,9 @@ const RealEstateSchema = new mongoose.Schema(
     agentId: {
       type: String, 
       ref: 'Agent'
+    },
+    amount:{
+      type:Number
     }
   },
   { timestamps: true }

@@ -16,6 +16,9 @@ const SavingsInvestmentSchema = new mongoose.Schema({
   district: {
     type: String,
   },
+  amount:{
+    type:Number
+  },
   agentId: {
     type: String, 
     ref: 'Agent'
