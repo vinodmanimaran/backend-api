@@ -10,6 +10,7 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
       alternate_number,
       vehicle,
       place,
+      OtherVehicle,
       district,
     } = req.body;
 
@@ -29,6 +30,7 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
       vehicle,
       place,
       district,
+      OtherVehicle,
       agentId:agent.agentId
     });
 

@@ -14,6 +14,10 @@ const VehicleInsuranceSchema = new mongoose.Schema({
     type: String,
     enum:["Bike", "Car", "Van", "School Bus", "Commercial vehicles", "Others"]
   },
+OtherVehicle:{
+  type: String,
+},
+
   place: {
     type: String,
   },
