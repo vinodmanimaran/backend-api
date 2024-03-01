@@ -39,7 +39,15 @@ const port = process.env.PORT || 5000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(cors({ origin: "*"}));
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 app.use(requestIp.mw());
 
 
