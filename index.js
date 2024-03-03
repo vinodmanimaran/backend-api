@@ -50,8 +50,6 @@ app.use(session({
     sameSite: 'none',
     httpOnly: false,
     secure:true
-
-
   }
 }));
 
@@ -62,7 +60,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: '*',
   optionsSuccessStatus: 200,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   credentials: true,
