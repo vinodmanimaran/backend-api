@@ -37,12 +37,21 @@ const oneWeek = 7 * 24 * 60 * 60 * 1000;
 app.use(express.json());
 app.use(bodyParser.json());
 
+app.set("trust proxy", 1);
+
 app.use(session({
   secret: 'secret',
   resave: false,    
   saveUninitialized: true,
+  proxy:true,
+  name:'PEEJIYEM',
   cookie:{
     maxAge: oneWeek, 
+    sameSite: 'none',
+    httpOnly: false,
+    secure:true
+
+
   }
 }));
 
