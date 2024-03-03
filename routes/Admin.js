@@ -1,12 +1,12 @@
 import express from 'express'
 
-import { login, signup } from '../controllers/Auth.js'
+import { login, resetPassword } from '../controllers/Auth.js'
 
 const AdminRoute=express.Router()
 
 
-AdminRoute.post("/signup",signup)
 AdminRoute.post("/login",login)
+AdminRoute.post("/resetpassword",resetPassword)
 
 
 export default AdminRoute

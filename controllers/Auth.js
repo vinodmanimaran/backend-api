@@ -1,97 +1,117 @@
-import Admin from '../models/Admin.js';
+import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import Admin from '../models/Admin.js';
 
-const jwtSecret ="Vinodkumar";
+const jwtSecret = process.env.JWT_SECRET || "Vinodkumar"; 
+const Authrouter = Router();
+let hardcodedAdmin;
 
 const generateToken = (admin) => {
   const payload = {
     id: admin._id,
     username: admin.username,
+    email: admin.email
   };
 
   return jwt.sign(payload, jwtSecret, { expiresIn: '1h' });
 };
 
-
-
-
-export const signup = async (req, res) => {
+const initializeHardcodedAdmin = async () => {
   try {
-    const { username, email, password } = req.body;
-    const existingAdmin = await Admin.findOne({ email });
+    hardcodedAdmin = await Admin.findOne({ username: "vinod" });
+    if (!hardcodedAdmin) {
+      const hashedPassword = await bcrypt.hash("manimaran", 10); 
 
-    if (existingAdmin) {
-      return res.status(400).json({ error: 'Admin with this email already exists' });
+      hardcodedAdmin = await Admin.create({
+        username: "vinod",
+        email: "vk5241415@gmail.com",
+        password: hashedPassword
+      });
+    }
+  } catch (error) {
+    console.error("Error initializing hardcoded admin:", error);
+  }
+};
+
+initializeHardcodedAdmin();
+
+Authrouter.post('/login', async (req, res) => {
+  try {
+    const { identifier, password } = req.body;
+
+    const admin = await Admin.findOne({
+      $or: [{ username: identifier }, { email: identifier }]
+    });
+
+    if (!admin) {
+      return res.status(404).json({ error: 'Not Found', message: 'User not found.' });
     }
 
-    const newAdmin = new Admin({ username, email, password: password });
-     const newAdminCreated=await newAdmin.save();
+    const validateAdmin = await bcrypt.compare(password, admin.password);
 
+    if (!validateAdmin) {
+      return res.status(401).json({ error: 'Unauthorized', message: 'Invalid password.' });
+    }
 
-    res.status(201).json({ message: ' New Admin created successfully',newAdminCreated });
+    req.session.user = admin;
+
+    const token = generateToken(admin);
+
+    res.status(200).json({ message: 'Login Success', token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
-};
+});
 
 
 
-export const login = async (req, res) => {
-    try {
-        if (!req.body.email || !req.body.password) {
-            return res.status(400).json({ error: 'BAD_REQUEST', message: 'Email and password are required.' });
-        }
+Authrouter.post('/resetpassword', async (req, res) => {
+  try {
+    const { identifier, newPassword } = req.body;
 
-        const admin = await Admin.findOne({ email: req.body.email });
+    const admin = await Admin.findOne({
+      $or: [{ username: identifier }, { email: identifier }]
+    });
 
-        if (!admin) {
-            return res.status(404).json({ error: 'USER_NOT_FOUND', message: 'User not found.' });
-        }
-
-        const validateAdmin = await bcrypt.compare(req.body.password, admin.password);
-        console.log('Input Password:', req.body.password);
-        console.log('Hashed Password:', admin.password);
-        console.log('Password Validation Result:', validateAdmin);
-        
-        if (!validateAdmin) {
-            return res.status(401).json({ error: 'WRONG_PASSWORD', message: 'Wrong password.' });
-        }
-
-        const token = generateToken(admin);
-
-        const { password, ...others } = admin._doc;
-
-
-        res.status(200).json({ message: 'Login Success', user: others,token });
-    } catch (error) {
-        console.error(error);
-
-        if (error.name === 'ValidationError') {
-            return res.status(422).json({ error: 'VALIDATION_ERROR', message: error.message });
-        }
-
-        if (error.code === 11000) {
-            return res.status(409).json({ error: 'DUPLICATE_KEY_ERROR', message: 'Duplicate key violation.' });
-        }
-
-        if (error.name === 'MongoError') {
-            if (error.code === 121) {
-                return res.status(400).json({ error: 'INVALID_MONGO_ID', message: 'Invalid MongoDB ID.' });
-            } else if (error.code === 66) {
-                return res.status(400).json({ error: 'INVALID_MONGO_QUERY', message: 'Invalid MongoDB query.' });
-            }
-        }
-
-        if (error instanceof SyntaxError && error.message.includes('JSON')) {
-            return res.status(400).json({ error: 'INVALID_JSON', message: 'Invalid JSON format in the request.' });
-        }
-
-        res.status(500).json({ error: 'INTERNAL_SERVER_ERROR', message: 'Internal server error occurred.' });
+    if (!admin) {
+      return res.status(404).json({ error: 'Not Found', message: 'User not found.' });
     }
-};
 
-export const logout = (req, res) => {
-  res.status(200).json({ message: 'Logout successful' });
-};
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      await Admin.findByIdAndUpdate(admin._id, { password: hashedPassword });
+
+    req.session.admin.password = hashedPassword;
+
+    res.status(200).json({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+Authrouter.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    res.status(200).json({ message: 'Logout successful' });
+  });
+});
+
+
+
+Authrouter.get("/checklogin",(req,res)=>{
+  if(req.session && req.session.user){
+    res.json({loggedIn:true})
+  }else{
+    res.json({loggedIn:false})
+  }
+})
+
+
+export default Authrouter;
