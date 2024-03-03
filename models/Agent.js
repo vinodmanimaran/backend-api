@@ -35,7 +35,6 @@ const agentSchema = new mongoose.Schema({
     Aadhar_Number:{
 type:String,
 required: true
-
     },
     PAN_Number:{
         type: String,

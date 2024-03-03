@@ -81,9 +81,8 @@ Authrouter.post('/resetpassword', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      await Admin.findByIdAndUpdate(admin._id, { password: hashedPassword });
+    await Admin.findByIdAndUpdate(admin._id, { password: hashedPassword });
 
-    req.session.admin.password = hashedPassword;
 
     res.status(200).json({ message: 'Password reset successful' });
   } catch (error) {
@@ -91,6 +90,7 @@ Authrouter.post('/resetpassword', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 Authrouter.get('/logout', (req, res) => {
@@ -112,6 +112,18 @@ Authrouter.get("/checklogin",(req,res)=>{
     res.json({loggedIn:false})
   }
 })
+
+
+Authrouter.get('/private', (req, res) => {
+  // Check if user is authenticated
+  if (req.session && req.session.user) {
+    // Private route logic here
+    res.status(200).json({ message: 'Private route accessed successfully' });
+  } else {
+    // User not authenticated
+    res.status(401).json({ error: 'Unauthorized', message: 'Please login.' });
+  }
+});
 
 
 export default Authrouter;

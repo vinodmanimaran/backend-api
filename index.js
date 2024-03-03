@@ -33,15 +33,19 @@ import Authrouter from './controllers/Auth.js';
 
 dotenv.config();
 const app = express();
-
+const oneWeek = 7 * 24 * 60 * 60 * 1000;
 app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(session({
   secret: 'secret',
   resave: false,    
-  saveUninitialized: true 
+  saveUninitialized: true,
+  cookie:{
+    maxAge: oneWeek, 
+  }
 }));
+
 
 const port = process.env.PORT || 5000;
 
@@ -83,14 +87,17 @@ app.use((err, req, res, next) => {
 });
 
 const requireLogin = (req, res, next) => {
-  if (!req.session.admin) {
-    return res.status(401).json({ error: 'Unauthorized', message: 'Please login.' });
+  if (req.session && req.session.user) {
+      next();
+  } else {
+      res.status(401).json({ error: 'Unauthorized: Login required' });
   }
-  next();
 };
+
 
 app.use("/auth", Authrouter);
 app.get('/dashboard',requireLogin, async (req, res) => {
+  console.log('Session User:', req.session.user);
     try {
       // Fetch data from different models
       const jobQueryData = await JobQuery.find();
@@ -146,9 +153,7 @@ app.use("/services", InsuranceRoute);
 app.use("/services", SavingsInvestmentsRoute);
 app.use("/services", VechicleInsuranceRoute);
 app.use("/agent",AgentRouter,requireLogin)
-app.get('/', (req, res) => {  
-    res.send('Welcome to the home page');
-});
+
 
 app.listen(port, () => {
     console.log(`The Server is on ${port}`);
