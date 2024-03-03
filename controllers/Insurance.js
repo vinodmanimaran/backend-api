@@ -8,9 +8,9 @@ export const InsuranceController = expressAsyncHandler(async (req, res) => {
       name,
       mobile,
       alternate_number,
-      place,
+      Place,
       insurance_type,
-            district,
+            District,
     } = req.body;
 
 
@@ -28,8 +28,8 @@ export const InsuranceController = expressAsyncHandler(async (req, res) => {
       name,
       mobile,
       alternate_number,
-      place,
-      district,
+      Place,
+      District,
       insurance_type,
       agentId:agent.agentId
     });

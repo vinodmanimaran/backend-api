@@ -20,10 +20,10 @@ const JobQuerySchema = new mongoose.Schema(
     Country: {
       type: String,
     },
-    Place: {
+    place: {
       type: String,
     },
-    District: {
+    district: {
       type: String,
     },
     agentId: {

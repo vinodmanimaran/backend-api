@@ -10,10 +10,10 @@ const InsuranceSchema = new mongoose.Schema({
   alternate_number: {
     type: String,
   },
-  place: {
+  Place: {
     type: String,
   },
-  district: {
+  District: {
     type: String,
   },
   insurance_type: {

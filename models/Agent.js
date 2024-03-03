@@ -32,6 +32,34 @@ const agentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    Aadhar_Number:{
+type:String,
+required: true
+
+    },
+    PAN_Number:{
+        type: String,
+        required: true
+
+
+    },
+Bank_Name:{
+    type: String,
+    required: true
+
+
+},
+Account_Number:{
+type:String,
+required: true
+
+},
+IFSC_Code:{
+    type: String,
+    required: true
+
+
+},
     referralID: {
         type: String,
         unique: true

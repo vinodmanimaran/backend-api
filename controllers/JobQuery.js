@@ -12,8 +12,8 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
       Qualification,
       Experience,
       Country,
-      Place,
-      District,
+      place,
+      district,
     } = req.body;
     const referralID = req.params.referralID; // Extract referralID from request parameters
     console.log(referralID)
@@ -25,14 +25,14 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
     }
 
     const newJobQuery = new JobQuery({
-      name:name,
+      name,
       mobile,
       alternate_number,
       Qualification,
       Experience,
       Country,
-      Place,
-      District,
+      place,
+      district,
       agentId:agent.agentId
     });
 
@@ -56,8 +56,8 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
       <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Qualification:</strong> ${Qualification}</p>
       <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Experience:</strong> ${Experience}</p>
       <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Country:</strong> ${Country}</p>
-      <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Place:</strong> ${Place}</p>
-      <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">District:</strong> ${District}</p>
+      <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">Place:</strong> ${place}</p>
+      <p style="margin-bottom: 10px;"><strong style="color: #007bff; font-weight: bold;">District:</strong> ${district}</p>
     </div>
     <p style="margin-top: 20px;">Please review and follow up with the lead.</p>
   </div>

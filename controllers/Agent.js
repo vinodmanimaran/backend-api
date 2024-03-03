@@ -3,8 +3,8 @@ import Agent from '../models/Agent.js';
 
 export const createAgent = async (req, res) => {
     try {
-        const { name, email, contactNumber, location } = req.body;
-        const newAgent = new Agent({ name, email, contactNumber, location });
+        const { name, email, contactNumber,location,PAN_Number,Bank_Name,Aadhar_Number,Account_Number,IFSC_Code } = req.body;
+        const newAgent = new Agent({ name, email, contactNumber, location,PAN_Number,Bank_Name,Aadhar_Number,Account_Number,IFSC_Code });
         await newAgent.save();
 
 
