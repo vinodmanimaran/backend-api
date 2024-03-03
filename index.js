@@ -61,12 +61,19 @@ const __dirname = path.dirname(__filename);
 
 const corsOptions = {
   origin: '*',
-  optionsSuccessStatus: 200,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   credentials: true,
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
+
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 
 app.use(requestIp.mw());
 
