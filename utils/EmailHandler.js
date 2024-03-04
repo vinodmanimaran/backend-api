@@ -38,7 +38,6 @@ export const handleFormSubmission = async (formData, customSubject, customText) 
       html: customText || 'A new form has been submitted.', 
     });
 
-    console.log(`Email sent: ${info.messageId}`);
     io.emit('newFormSubmitted', formData);
   } catch (error) {
     console.error(`Error handling form submission: ${error.message}`);

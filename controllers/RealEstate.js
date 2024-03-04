@@ -10,14 +10,13 @@ export const RealEstateController = expressAsyncHandler(async (req, res) => {
       alternate_number,
       purchaseOrSale,
       agreeOrCommercial,
-      place,
-      district,
+      Place,
+      District,
       Estimated_value
     } = req.body;
 
 
     const referralID = req.params.referralID; // Extract referralID from request parameters
-    console.log(referralID)
 
     // Find the agent using the referral ID extracted from the URL
     const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
@@ -32,8 +31,8 @@ export const RealEstateController = expressAsyncHandler(async (req, res) => {
       alternate_number,
       purchaseOrSale,
       agreeOrCommercial,
-      place,
-      district,
+      Place,
+      District,
       Estimated_value,
       agentId:agent.agentId
     });
@@ -42,8 +41,7 @@ export const RealEstateController = expressAsyncHandler(async (req, res) => {
 
     res.status(201).json(savedRealEstate);
   } catch (error) {
-    console.error('Error creating real estate submission:', error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -51,14 +49,12 @@ export const RealEstateController = expressAsyncHandler(async (req, res) => {
 export const getRealEstate=expressAsyncHandler(async(req,res)=>{
   try {
     const referralID = req.params.referralID; 
-    console.log(referralID)
    // Find the agent associated with the referral ID
    const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
   
     const RealEstates=await RealEstate.find({agentId:agent.agentId})
     res.status(200).json({agent,RealEstates})
   } catch (error) {
-    console.error(error.response.name)
-    res.status(500).json({message:"Internal Server Error"})
+    res.status(500).json({ message: error.message });
   }
 })

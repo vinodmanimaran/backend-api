@@ -13,7 +13,7 @@ const CreditCardSchema = new mongoose.Schema({
   Place: {
     type: String,
   },
-  Districtistrict: {
+  District: {
     type: String,
   },
   agentId: {

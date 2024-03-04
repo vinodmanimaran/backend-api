@@ -59,8 +59,7 @@ Authrouter.post('/login', async (req, res) => {
 
     res.status(200).json({ message: 'Login Success', token });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error',error });
   }
 });
 
@@ -85,8 +84,7 @@ Authrouter.post('/resetpassword', async (req, res) => {
 
     res.status(200).json({ message: 'Password reset successful' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error' ,error});
   }
 });
 
@@ -95,7 +93,6 @@ Authrouter.post('/resetpassword', async (req, res) => {
 Authrouter.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.error("Error destroying session:", err);
       return res.status(500).json({ error: 'Internal server error' });
     }
     res.status(200).json({ message: 'Logout successful' });

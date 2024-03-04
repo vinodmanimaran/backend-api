@@ -6,8 +6,6 @@ export const createAgent = async (req, res) => {
         const { name, email, contactNumber,location,PAN_Number,Bank_Name,Aadhar_Number,Account_Number,IFSC_Code } = req.body;
         const newAgent = new Agent({ name, email, contactNumber, location,PAN_Number,Bank_Name,Aadhar_Number,Account_Number,IFSC_Code });
         await newAgent.save();
-
-
         res.status(201).json({ agent: newAgent});
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -57,11 +57,12 @@ app.use(session({
 const port = process.env.PORT || 5000;
 
 const corsOptions = {
-  origin: ['http://localhost:5173'],
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  origin: '*',
+  optionsSuccessStatus: 200, 
+  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
   credentials: true,
-  optionsSuccessStatus: 200,
 };
+
 
 app.use(cors(corsOptions));
 
@@ -80,7 +81,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 
 app.use((err, req, res, next) => {
-  console.error('Error:', err);
   res.status(500).send('Internal Server Error');
 });
 
@@ -160,8 +160,7 @@ averagePerDay = averagePerDay.toFixed(2);
           page: 'dashboard'
       });
   } catch (error) {
-      console.error('Error fetching data for dashboard:', error);
-      res.status(500).send('Internal Server Error');
+    res.status(500).json({ message: error.message });
   }
 });
 

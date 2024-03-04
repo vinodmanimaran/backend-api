@@ -10,14 +10,14 @@ const SavingsInvestmentSchema = new mongoose.Schema({
   alternate_number: {
     type: String,
   },
-  place: {
+  Place: {
     type: String,
   },
-  district: {
+  District: {
     type: String,
   },
-  Estimated_saving_amount:{
-    type:Number
+  savingamount:{
+    type:String
   },
   agentId: {
     type: String, 

@@ -18,10 +18,10 @@ OtherVehicle:{
   type: String,
 },
 
-  place: {
+  Place: {
     type: String,
   },
-  district: {
+  District: {
     type: String,
   },
 

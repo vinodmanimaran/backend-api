@@ -9,13 +9,12 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
       mobile,
       alternate_number,
       vehicle,
-      place,
+      Place,
       OtherVehicle,
-      district,
+      District,
     } = req.body;
 
     const referralID = req.params.referralID; 
-    console.log(referralID)
 
     const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
     if (!agent) {
@@ -28,8 +27,8 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
       mobile,
       alternate_number,
       vehicle,
-      place,
-      district,
+      Place,
+      District,
       OtherVehicle,
       agentId:agent.agentId
     });
@@ -38,8 +37,8 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
 
     res.status(201).json(savedVehicleInsurance);
   } catch (error) {
-    console.error('Error creating vehicle insurance submission:', error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: error.message });
+
   }
 });
 
@@ -47,13 +46,11 @@ export const VehicleInsuranceController = expressAsyncHandler(async (req, res) =
 export const getVehicleInsurance=expressAsyncHandler(async(req,res)=>{
   try{
     const referralID = req.params.referralID; 
-    console.log(referralID)
    const agent = await Agent.findOne({ uniqueURL: { $regex: `.*${referralID}.*` } });
     const VehicleInsurances=await VehicleInsurance.find({agentId:agent.agentId})
     res.status(200).json({agent,VehicleInsurances})
   }catch(error){
-    console.error(error.response.name)
-    res.status(500).json({message:"Internal Server Error"})
+    res.status(500).json({ message: error.message });
   }
  
 })

@@ -13,10 +13,10 @@ const LoanSchema = new mongoose.Schema({
   amount:{
     type: Number,
   },
-  place: {
+  Place: {
     type: String,
   },
-  district: {
+  District: {
     type: String,
   },
   loan_type: {
