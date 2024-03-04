@@ -28,7 +28,7 @@ import Authrouter from './controllers/Auth.js';
 
 dotenv.config();
 const app = express();
-const savingstitle = "Microsavings & Investments";
+const savingstitle = "Microsavings &\nInvestments";
 const RealEstatetitle = "RealEstate";
 const CreditCardtitle = "CreditCard";
 const vehicleInsurancestitle="VehicleInsurance"
