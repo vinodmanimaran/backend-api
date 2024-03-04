@@ -6,64 +6,62 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import path from 'path';
 import cors from 'cors';
-import DeviceDetector from 'device-detector-js';
 import bodyParser from 'body-parser';
-import User from './models/User.js';
-import { fileURLToPath } from 'url';
 import session from 'express-session';
+
 import JobQueryRoute from './routes/JobQuery.js';
 import RealEstateRoute from './routes/RealEstate.js';
 import CreditCardRoute from './routes/CreditCard.js';
 import SavingsInvestmentsRoute from './routes/SavingsInvestments.js';
 import LoanRoute from './routes/Loans.js';
-import VechicleInsuranceRoute from './routes/VehicleInsurance.js';
+import VehicleInsuranceRoute from './routes/VehicleInsurance.js';
 import JobQuery from './models/JobQuery.js';
 import Loan from './models/Loans.js';
 import CreditCard from './models/CreditCard.js';
 import RealEstate from './models/RealEstate.js';
 import SavingsInvestments from './models/SavingsInvestments.js';
 import VehicleInsurance from './models/VehicleInsurance.js';
-import AgentRouter from './routes/Agent.js' 
+import AgentRouter from './routes/Agent.js';
 import InsuranceRoute from './routes/Insurance.js';
 import Insurance from './models/Insurance.js';
 import Authrouter from './controllers/Auth.js';
 
 dotenv.config();
 const app = express();
+const savingstitle = "Microsavings & Investments";
+const RealEstatetitle = "Real Estate";
+const CreditCardtitle = "Credit Card";
+const vehicleInsurancestitle="Vehicle Insurance"
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
 app.use(express.json());
 app.use(bodyParser.json());
+
 app.set("trust proxy", 1);
+
 app.use(session({
   secret: 'secret',
-  resave: false,    
+  resave: false,
   saveUninitialized: true,
-  proxy:true,
-  name:'PEEJIYEM',
-  cookie:{
-    maxAge: oneWeek, 
+  proxy: true,
+  name: 'PEEJIYEM',
+  cookie: {
+    maxAge: oneWeek,
     sameSite: 'none',
-    httpOnly: false,
-    secure:true
+    httpOnly: true,
+    // secure: true
   }
 }));
 
-
 const port = process.env.PORT || 5000;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const corsOptions = {
-  origin: ['https://pygeemadmin.vercel.app','http://localhost:5173'],
+  origin: ['https://pygeemadmin.vercel.app', 'http://localhost:5173'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   credentials: true,
   optionsSuccessStatus: 200,
 };
+
 app.use(cors(corsOptions));
-
-
-
-
 
 try {
     const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/your_database';
@@ -94,8 +92,7 @@ const requireLogin = (req, res, next) => {
 
 
 app.use("/auth", Authrouter);
-app.get('/dashboard',requireLogin, async (req, res) => {
-  console.log('Session User:', req.session.user);
+app.get('/dashboard', requireLogin, async (req, res) => {
     try {
       // Fetch data from different models
       const jobQueryData = await JobQuery.find();
@@ -104,16 +101,17 @@ app.get('/dashboard',requireLogin, async (req, res) => {
       const realEstateData = await RealEstate.find();
       const savingsInvestmentsData = await SavingsInvestments.find();
       const vehicleInsurancesData = await VehicleInsurance.find();
-    const InsuranceData=await Insurance.find()
+      const InsuranceData = await Insurance.find();
+
       // Calculate leads count and percentage
       const leadsCount = {
-        jobs: jobQueryData.length,
-        loans: loansData.length,
-        creditCards: creditCardData.length,
-        realEstate: realEstateData.length,
-        savingsInvestments: savingsInvestmentsData.length,
-        vehicleInsurances: vehicleInsurancesData.length,
-        InsuranceData:InsuranceData.length
+        Jobs: jobQueryData.length,
+        Loans: loansData.length,
+    [CreditCardtitle]: creditCardData.length,
+      [RealEstatetitle]: realEstateData.length,
+     [savingstitle]: savingsInvestmentsData.length,
+        [vehicleInsurancestitle]: vehicleInsurancesData.length,
+        Insurance: InsuranceData.length
       };
   
       const totalServices = Object.keys(leadsCount).length;
@@ -126,15 +124,16 @@ app.get('/dashboard',requireLogin, async (req, res) => {
           leadsPercentage[key] = 0;
         }
       }
-  
+
+     
       const categorizedData = {
-        jobs: jobQueryData,
-        insurance:InsuranceData,
-        loans: loansData,
-        creditCards: creditCardData,
-        realEstate: realEstateData,
-        savings: savingsInvestmentsData,
-        vehicle: vehicleInsurancesData,
+        Jobs: jobQueryData,
+        Insurance: InsuranceData,
+        Loans: loansData,
+        [CreditCardtitle]: creditCardData,
+        [RealEstatetitle]: realEstateData,
+        [savingstitle]: savingsInvestmentsData,
+        [vehicleInsurancestitle]: vehicleInsurancesData,
       };
   
       res.status(200).send({ data: categorizedData, leadsCount, leadsPercentage, page: 'dashboard' });
@@ -149,8 +148,8 @@ app.use("/services", CreditCardRoute);
 app.use("/services", LoanRoute);
 app.use("/services", InsuranceRoute);
 app.use("/services", SavingsInvestmentsRoute);
-app.use("/services", VechicleInsuranceRoute);
-app.use("/agent",AgentRouter,requireLogin)
+app.use("/services", VehicleInsuranceRoute);
+app.use("/agent", AgentRouter, requireLogin);
 
 
 app.listen(port, () => {
