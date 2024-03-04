@@ -29,9 +29,9 @@ import Authrouter from './controllers/Auth.js';
 dotenv.config();
 const app = express();
 const savingstitle = "Microsavings & Investments";
-const RealEstatetitle = "Real Estate";
-const CreditCardtitle = "Credit Card";
-const vehicleInsurancestitle="Vehicle Insurance"
+const RealEstatetitle = "RealEstate";
+const CreditCardtitle = "CreditCard";
+const vehicleInsurancestitle="VehicleInsurance"
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
 app.use(express.json());
 app.use(bodyParser.json());
