@@ -56,15 +56,30 @@ app.use(session({
 
 const port = process.env.PORT || 5000;
 
-const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200, 
-  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
-  credentials: true,
+const getCorsOptions = () => {
+  const allowedOrigins = ['https://pygeemadmin.vercel.app', 'https://pygeem-client.vercel.app', 'http://localhost:5173/'];
+
+  const corsOptions = {
+      origin: function (origin, callback) {
+          if (!origin || allowedOrigins.includes(origin)) {
+              callback(null, true);
+          } else {
+              callback(new Error('Not allowed by CORS'));
+          }
+      },
+      optionsSuccessStatus: 200,
+      methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+      credentials: true
+  };
+
+  return corsOptions;
 };
 
 
+const corsOptions = getCorsOptions();
 app.use(cors(corsOptions));
+
+
 
 try {
     const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/your_database';
