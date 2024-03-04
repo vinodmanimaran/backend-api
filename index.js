@@ -10,9 +10,7 @@ import DeviceDetector from 'device-detector-js';
 import bodyParser from 'body-parser';
 import User from './models/User.js';
 import { fileURLToPath } from 'url';
-import requestIp from 'request-ip';
 import session from 'express-session';
-
 import JobQueryRoute from './routes/JobQuery.js';
 import RealEstateRoute from './routes/RealEstate.js';
 import CreditCardRoute from './routes/CreditCard.js';
@@ -28,7 +26,6 @@ import VehicleInsurance from './models/VehicleInsurance.js';
 import AgentRouter from './routes/Agent.js' 
 import InsuranceRoute from './routes/Insurance.js';
 import Insurance from './models/Insurance.js';
-
 import Authrouter from './controllers/Auth.js';
 
 dotenv.config();
@@ -36,9 +33,7 @@ const app = express();
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
 app.use(express.json());
 app.use(bodyParser.json());
-
 app.set("trust proxy", 1);
-
 app.use(session({
   secret: 'secret',
   resave: false,    
@@ -58,24 +53,13 @@ const port = process.env.PORT || 5000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const corsOptions = {
   origin: ['https://pygeemadmin.vercel.app','http://localhost:5173'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   credentials: true,
   optionsSuccessStatus: 200,
 };
-
 app.use(cors(corsOptions));
-
-// app.use(function(req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', ['https://pygeemadmin.vercel.app','http://localhost:5173']);
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
-
-
-app.use(requestIp.mw());
 
 
 

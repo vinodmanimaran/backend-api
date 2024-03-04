@@ -2,7 +2,6 @@ import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Admin from '../models/Admin.js';
-
 const jwtSecret = process.env.JWT_SECRET || "Vinodkumar"; 
 const Authrouter = Router();
 let hardcodedAdmin;
