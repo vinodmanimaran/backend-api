@@ -52,7 +52,6 @@ app.use(session({
   }
 }));
 
-// https://pygeemadmin.vercel.app', 
 
 const port = process.env.PORT || 5000;
 
