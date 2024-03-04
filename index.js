@@ -48,7 +48,7 @@ app.use(session({
     maxAge: oneWeek,
     sameSite: 'none',
     httpOnly: false,
-    secure: true
+    secure: true,
   }
 }));
 
@@ -115,10 +115,9 @@ app.get('/dashboard', requireLogin, async (req, res) => {
 
       const totalDataCount = Object.values(leadsCount).reduce((acc, val) => acc + val, 0);
 
-      // Calculate live duration in days
-      const startDate = new Date('2024-02-14'); // Example start date
-      const endDate = new Date(); // Current date
-      const oneDay = 1000 * 60 * 60 * 24; // Milliseconds in a day
+      const startDate = new Date('2024-02-14'); 
+      const endDate = new Date(); 
+      const oneDay = 1000 * 60 * 60 * 24; 
       const liveDuration = Math.floor((endDate - startDate) / oneDay);
 
  let averagePerDay = totalDataCount / liveDuration;
@@ -136,6 +135,8 @@ averagePerDay = averagePerDay.toFixed(2);
           }
       }
 
+      const totalDataCountPercentage = ((totalDataCount / (totalServices * liveDuration)) * 100).toFixed(2);
+
       const categorizedData = {
           Jobs: jobQueryData,
           Loans: loansData,
@@ -151,7 +152,7 @@ averagePerDay = averagePerDay.toFixed(2);
           leadsCount,
           leadsPercentage,
           totalDataCount,
-          totalDataCountPercentage: 100,
+          totalDataCountPercentage,
           liveDuration,
           averagePerDay,
           page: 'dashboard'
