@@ -94,7 +94,6 @@ const requireLogin = (req, res, next) => {
 app.use("/auth", Authrouter);
 app.get('/dashboard', requireLogin, async (req, res) => {
     try {
-      // Fetch data from different models
       const jobQueryData = await JobQuery.find();
       const loansData = await Loan.find();
       const creditCardData = await CreditCard.find();
@@ -103,7 +102,6 @@ app.get('/dashboard', requireLogin, async (req, res) => {
       const vehicleInsurancesData = await VehicleInsurance.find();
       const InsuranceData = await Insurance.find();
 
-      // Calculate leads count and percentage
       const leadsCount = {
         Jobs: jobQueryData.length,
         Loans: loansData.length,
