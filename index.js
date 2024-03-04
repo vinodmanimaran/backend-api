@@ -28,7 +28,7 @@ import Authrouter from './controllers/Auth.js';
 
 dotenv.config();
 const app = express();
-const savingstitle = "Microsavings &\nInvestments";
+const savingstitle = "Microsavings & Investments";
 const RealEstatetitle = "RealEstate";
 const CreditCardtitle = "CreditCard";
 const vehicleInsurancestitle="VehicleInsurance"
@@ -108,7 +108,7 @@ app.get('/dashboard', requireLogin, async (req, res) => {
           Loans: loansData.length,
           CreditCard: creditCardData.length,
         [RealEstatetitle]: realEstateData.length,
-          ["Microsavings &\nInvestments"]: savingsInvestmentsData.length,
+          [savingstitle]: savingsInvestmentsData.length,
         [RealEstatetitle]: vehicleInsurancesData.length,
           Insurance: insuranceData.length
       };
