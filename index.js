@@ -93,53 +93,75 @@ const requireLogin = (req, res, next) => {
 
 app.use("/auth", Authrouter);
 app.get('/dashboard', requireLogin, async (req, res) => {
-    try {
+  try {
       const jobQueryData = await JobQuery.find();
       const loansData = await Loan.find();
       const creditCardData = await CreditCard.find();
       const realEstateData = await RealEstate.find();
       const savingsInvestmentsData = await SavingsInvestments.find();
       const vehicleInsurancesData = await VehicleInsurance.find();
-      const InsuranceData = await Insurance.find();
+      const insuranceData = await Insurance.find();
 
+      // Calculate total data count
       const leadsCount = {
-        Jobs: jobQueryData.length,
-        Loans: loansData.length,
-    [CreditCardtitle]: creditCardData.length,
-      [RealEstatetitle]: realEstateData.length,
-     [savingstitle]: savingsInvestmentsData.length,
-        [vehicleInsurancestitle]: vehicleInsurancesData.length,
-        Insurance: InsuranceData.length
+          Jobs: jobQueryData.length,
+          Loans: loansData.length,
+          CreditCard: creditCardData.length,
+          RealEstate: realEstateData.length,
+          Savings: savingsInvestmentsData.length,
+          VehicleInsurance: vehicleInsurancesData.length,
+          Insurance: insuranceData.length
       };
-  
+
+      const totalDataCount = Object.values(leadsCount).reduce((acc, val) => acc + val, 0);
+
+      // Calculate live duration in days
+      const startDate = new Date('2024-02-14'); // Example start date
+      const endDate = new Date(); // Current date
+      const oneDay = 1000 * 60 * 60 * 24; // Milliseconds in a day
+      const liveDuration = Math.floor((endDate - startDate) / oneDay);
+
+ let averagePerDay = totalDataCount / liveDuration;
+ 
+averagePerDay = averagePerDay.toFixed(2);
+
+
       const totalServices = Object.keys(leadsCount).length;
       const leadsPercentage = {};
-  
       for (const key in leadsCount) {
-        if (leadsCount[key] !== 0) {
-          leadsPercentage[key] = ((leadsCount[key] / totalServices) * 100).toFixed(2);
-        } else {
-          leadsPercentage[key] = 0;
-        }
+          if (leadsCount[key] !== 0) {
+              leadsPercentage[key] = ((leadsCount[key] / totalDataCount) * 100).toFixed(2);
+          } else {
+              leadsPercentage[key] = 0;
+          }
       }
 
-     
       const categorizedData = {
-        Jobs: jobQueryData,
-        Insurance: InsuranceData,
-        Loans: loansData,
-        [CreditCardtitle]: creditCardData,
-        [RealEstatetitle]: realEstateData,
-        [savingstitle]: savingsInvestmentsData,
-        [vehicleInsurancestitle]: vehicleInsurancesData,
+          Jobs: jobQueryData,
+          Loans: loansData,
+          CreditCard: creditCardData,
+          RealEstate: realEstateData,
+          Savings: savingsInvestmentsData,
+          VehicleInsurance: vehicleInsurancesData,
+          Insurance: insuranceData
       };
-  
-      res.status(200).send({ data: categorizedData, leadsCount, leadsPercentage, page: 'dashboard' });
-    } catch (error) {
+
+      res.status(200).send({
+          data: categorizedData,
+          leadsCount,
+          leadsPercentage,
+          totalDataCount,
+          totalDataCountPercentage: 100,
+          liveDuration,
+          averagePerDay,
+          page: 'dashboard'
+      });
+  } catch (error) {
       console.error('Error fetching data for dashboard:', error);
       res.status(500).send('Internal Server Error');
-    }
-  });
+  }
+});
+
 app.use("/others", JobQueryRoute);
 app.use("/services", RealEstateRoute);
 app.use("/services", CreditCardRoute);
