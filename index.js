@@ -52,10 +52,12 @@ app.use(session({
   }
 }));
 
+// https://pygeemadmin.vercel.app', 
+
 const port = process.env.PORT || 5000;
 
 const corsOptions = {
-  origin: ['https://pygeemadmin.vercel.app', 'http://localhost:5173'],
+  origin: ['http://localhost:5173'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   credentials: true,
   optionsSuccessStatus: 200,

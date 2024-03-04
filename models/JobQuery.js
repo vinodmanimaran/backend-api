@@ -6,10 +6,10 @@ const JobQuerySchema = new mongoose.Schema(
       type: String,
     }, 
     mobile: {
-      type: String, // Change type to String
+      type: String, 
     },
     alternate_number: {
-      type: String, // Change type to String if necessary
+      type: String, 
     },
     Qualification: {
       type: String,
@@ -20,11 +20,14 @@ const JobQuerySchema = new mongoose.Schema(
     Country: {
       type: String,
     },
-    place: {
+    Place: {
       type: String,
+      required:true,
     },
-    district: {
+    District: {
       type: String,
+      required:true,
+
     },
     agentId: {
       type: String, 

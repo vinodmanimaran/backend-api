@@ -11,8 +11,8 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
       Qualification,
       Experience,
       Country,
-      place,
-      district,
+      Place,
+      District,
     } = req.body;
     const referralID = req.params.referralID;
 
@@ -28,8 +28,8 @@ export const JobQueryController = expressAsyncHandler(async (req, res) => {
       Qualification,
       Experience,
       Country,
-      place,
-      district,
+      Place,
+      District,
       agentId:agent.agentId
     });
 

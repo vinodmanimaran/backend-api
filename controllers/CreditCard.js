@@ -12,8 +12,8 @@ export const CreditCardController = expressAsyncHandler(async (req, res) => {
             name,
             mobile,
             alternate_number,
-            place,
-            district
+            Place,
+            District
         } = req.body;
 
         const referralID = req.params.referralID; // Extract referralID from request parameters
@@ -30,9 +30,9 @@ export const CreditCardController = expressAsyncHandler(async (req, res) => {
             name,
             mobile,
             alternate_number,
-            place,
-            district,
-            agentId: agent.agentId // Assign the agent's ID
+            Place,
+            District,
+            agentId: agent.agentId 
         });
 
         // Save the new CreditCard

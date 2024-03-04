@@ -10,10 +10,10 @@ const CreditCardSchema = new mongoose.Schema({
   alternate_number: {
     type: String,
   },
-  place: {
+  Place: {
     type: String,
   },
-  district: {
+  Districtistrict: {
     type: String,
   },
   agentId: {
