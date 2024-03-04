@@ -140,10 +140,10 @@ averagePerDay = averagePerDay.toFixed(2);
       const categorizedData = {
           Jobs: jobQueryData,
           Loans: loansData,
-          CreditCard: creditCardData,
-          RealEstate: realEstateData,
-          Savings: savingsInvestmentsData,
-          VehicleInsurance: vehicleInsurancesData,
+       [CreditCardtitle]: creditCardData,
+          [RealEstatetitle]: realEstateData,
+          [savingstitle]: savingsInvestmentsData,
+        [vehicleInsurancestitle]: vehicleInsurancesData,
           Insurance: insuranceData
       };
 
