@@ -142,7 +142,7 @@ averagePerDay = averagePerDay.toFixed(2);
           Loans: loansData,
        [CreditCardtitle]: creditCardData,
           [RealEstatetitle]: realEstateData,
-          [savingstitle]: savingsInvestmentsData,
+          ["Microsavings & Investments"]: savingsInvestmentsData,
         [vehicleInsurancestitle]: vehicleInsurancesData,
           Insurance: insuranceData
       };
