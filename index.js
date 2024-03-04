@@ -107,9 +107,9 @@ app.get('/dashboard', requireLogin, async (req, res) => {
           Jobs: jobQueryData.length,
           Loans: loansData.length,
           CreditCard: creditCardData.length,
-          RealEstate: realEstateData.length,
-          Savings: savingsInvestmentsData.length,
-          VehicleInsurance: vehicleInsurancesData.length,
+        [RealEstatetitle]: realEstateData.length,
+          [savingstitle]: savingsInvestmentsData.length,
+        [RealEstatetitle]: vehicleInsurancesData.length,
           Insurance: insuranceData.length
       };
 
@@ -142,7 +142,7 @@ averagePerDay = averagePerDay.toFixed(2);
           Loans: loansData,
        [CreditCardtitle]: creditCardData,
           [RealEstatetitle]: realEstateData,
-          ["Microsavings & Investments"]: savingsInvestmentsData,
+          [savingstitle]: savingsInvestmentsData,
         [vehicleInsurancestitle]: vehicleInsurancesData,
           Insurance: insuranceData
       };
