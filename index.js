@@ -108,7 +108,7 @@ app.get('/dashboard', requireLogin, async (req, res) => {
           Loans: loansData.length,
           CreditCard: creditCardData.length,
         [RealEstatetitle]: realEstateData.length,
-          [savingstitle]: savingsInvestmentsData.length,
+          ["Microsavings &\nInvestments"]: savingsInvestmentsData.length,
         [RealEstatetitle]: vehicleInsurancesData.length,
           Insurance: insuranceData.length
       };
