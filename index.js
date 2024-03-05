@@ -8,7 +8,6 @@ import path from 'path';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import session from 'express-session';
-
 import JobQueryRoute from './routes/JobQuery.js';
 import RealEstateRoute from './routes/RealEstate.js';
 import CreditCardRoute from './routes/CreditCard.js';
@@ -121,7 +120,7 @@ app.get('/dashboard', requireLogin, async (req, res) => {
       const leadsCount = {
           Jobs: jobQueryData.length,
           Loans: loansData.length,
-          CreditCard: creditCardData.length,
+         [CreditCardtitle]: creditCardData.length,
         [RealEstatetitle]: realEstateData.length,
           [savingstitle]: savingsInvestmentsData.length,
         [RealEstatetitle]: vehicleInsurancesData.length,
