@@ -29,9 +29,9 @@ import Authrouter from './controllers/Auth.js';
 dotenv.config();
 const app = express();
 const savingstitle = "Microsavings & Investments";
-const RealEstatetitle = "RealEstate";
-const CreditCardtitle = "CreditCard";
-const vehicleInsurancestitle="VehicleInsurance"
+const RealEstatetitle = "Real Estate";
+const CreditCardtitle = "Credit Card";
+const vehicleInsurancestitle="Vehicle Insurance"
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
 app.use(express.json());
 app.use(bodyParser.json());
@@ -125,7 +125,9 @@ app.get('/dashboard', requireLogin, async (req, res) => {
         [RealEstatetitle]: realEstateData.length,
           [savingstitle]: savingsInvestmentsData.length,
         [RealEstatetitle]: vehicleInsurancesData.length,
-          Insurance: insuranceData.length
+          Insurance: insuranceData.length,
+        [vehicleInsurancestitle]: insuranceData.length
+
       };
 
       const totalDataCount = Object.values(leadsCount).reduce((acc, val) => acc + val, 0);
