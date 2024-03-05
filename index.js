@@ -130,15 +130,13 @@ app.get('/dashboard', requireLogin, async (req, res) => {
       };
 
       const totalDataCount = Object.values(leadsCount).reduce((acc, val) => acc + val, 0);
-
       const startDate = new Date('2024-02-14'); 
       const endDate = new Date(); 
       const oneDay = 1000 * 60 * 60 * 24; 
       const liveDuration = Math.floor((endDate - startDate) / oneDay);
 
  let averagePerDay = totalDataCount / liveDuration;
- 
-averagePerDay = averagePerDay.toFixed(2);
+ averagePerDay = averagePerDay.toFixed(2);
 
 
       const totalServices = Object.keys(leadsCount).length;
@@ -186,7 +184,6 @@ app.use("/services", InsuranceRoute);
 app.use("/services", SavingsInvestmentsRoute);
 app.use("/services", VehicleInsuranceRoute);
 app.use("/agent", AgentRouter, requireLogin);
-
 
 app.listen(port, () => {
     console.log(`The Server is on ${port}`);
