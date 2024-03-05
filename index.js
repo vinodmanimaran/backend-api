@@ -55,7 +55,7 @@ app.use(session({
 const port = process.env.PORT || 5000;
 
 const getCorsOptions = () => {
-  const allowedOrigins = ['https://pygeemadmin.vercel.app', 'https://pygeem-client.vercel.app', 'http://localhost:5173'];
+  const allowedOrigins = ['https://pygeemadmin.vercel.app/', 'https://pygeem-client.vercel.app/', 'http://localhost:5173/'];
 
   const corsOptions = {
       origin: function (origin, callback) {
