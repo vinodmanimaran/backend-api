@@ -18,13 +18,13 @@ const generateToken = (admin) => {
 
 const initializeHardcodedAdmin = async () => {
   try {
-    hardcodedAdmin = await Admin.findOne({ username: "vinod" });
+    hardcodedAdmin = await Admin.findOne({ username: "peejiyem" });
     if (!hardcodedAdmin) {
-      const hashedPassword = await bcrypt.hash("manimaran", 10); 
+      const hashedPassword = await bcrypt.hash("peejiyem", 10); 
 
       hardcodedAdmin = await Admin.create({
-        username: "vinod",
-        email: "vk5241415@gmail.com",
+        username: "peejiyem",
+        email: "manibharathi.pmk3@gmail.com",
         password: hashedPassword
       });
     }

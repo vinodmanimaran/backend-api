@@ -79,7 +79,7 @@ app.use(cors(corsOptions));
 
 
 try {
-    const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/your_database';
+    const DB_URL = process.env.DB_URL || 'mongodb+srv://manibharathipmk3:kdNAj7N589lm8ZnA@peejiyem.rrc5pf0.mongodb.net/?retryWrites=true&w=majority';
     await mongoose.connect(DB_URL);
     console.log('Connected to MongoDB');
 } catch (error) {
